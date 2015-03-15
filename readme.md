@@ -24,13 +24,13 @@ composer require latrell/alipay dev-master
 ```php
     'providers' => [
         // ...
-        'Latrell\Swagger\SwaggerServiceProvider',
+        'Latrell\Alipay\AlipayServiceProvider',
     ]
 ```
 
 运行 `php artisan vendor:publish` 命令，发布配置文件到你的项目中。
 
-配置文件 `config/latrell-swagger.php` 是你与 Alipay 互动的主要方式。
+配置文件 `config/latrell-alipay.php` 为公共配置信息文件， `config/latrell-alipay-web.php` 为Web版支付宝SDK配置， `config/latrell-alipay-mobile.php` 为手机端支付宝SDK配置。
 
 ## 例子
 
