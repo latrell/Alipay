@@ -8,8 +8,8 @@ return array(
 	'sign_type' => 'MD5',
 
 	// 服务器异步通知页面路径。
-	'notify_url' => route('xxx'),
+	'notify_url' => 'http://xxx',
 
 	// 页面跳转同步通知页面路径。
-	'return_url' => route('xxx')
+	'return_url' => 'http://xxx'
 );
