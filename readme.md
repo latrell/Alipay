@@ -34,22 +34,59 @@ composer require latrell/alipay dev-master
 
 ## 例子
 
+### 支付申请
+
+#### 网页
+
+```php
+	// 创建支付单。
+	$alipay = app('alipay.web');
+	$alipay->setOutTradeNo('order_id');
+	$alipay->setTotalFee('order_price');
+	$alipay->setSubject('goods_name');
+	$alipay->setBody('goods_description');
+
+	// 跳转到支付页面。
+	return redirect()->to($alipay->getPayLink());
+```
+
+#### 手机端
+
+```php
+	// 创建支付单。
+	$alipay = app('alipay.mobile');
+	$alipay->setOutTradeNo('order_id');
+	$alipay->setTotalFee('order_price');
+	$alipay->setSubject('goods_name');
+	$alipay->setBody('goods_description');
+
+	// 返回签名后的支付参数给支付宝移动端的SDK。
+	return $alipay->getPayPara();
+```
+
+### 结果通知
+
+#### 网页
+
 ```php
 	/**
 	 * 异步通知
 	 */
 	public function webNotify()
 	{
+		// 验证请求。
 		if (! app('alipay.web')->verify()) {
 			Log::notice('Alipay notify post data verification fail.', [
 				'data' => Request::instance()->getContent()
 			]);
 			return 'fail';
 		}
-	
+
+		// 判断通知类型。
 		switch (Input::get('trade_status')) {
 			case 'TRADE_SUCCESS':
 			case 'TRADE_FINISHED':
+				// TODO: 支付成功，取得订单号进行其它相关操作。
 				Log::debug('Alipay notify post data verification success.', [
 					'out_trade_no' => Input::get('out_trade_no'),
 					'trade_no' => Input::get('trade_no')
@@ -59,12 +96,13 @@ composer require latrell/alipay dev-master
 	
 		return 'success';
 	}
-	
+
 	/**
 	 * 同步通知
 	 */
 	public function webReturn()
 	{
+		// 验证请求。
 		if (! app('alipay.web')->verify()) {
 			Log::notice('Alipay return query data verification fail.', [
 				'data' => Request::getQueryString()
@@ -72,9 +110,11 @@ composer require latrell/alipay dev-master
 			return view('alipay.fail');
 		}
 
+		// 判断通知类型。
 		switch (Input::get('trade_status')) {
 			case 'TRADE_SUCCESS':
 			case 'TRADE_FINISHED':
+				// TODO: 支付成功，取得订单号进行其它相关操作。
 				Log::debug('Alipay notify get data verification success.', [
 					'out_trade_no' => Input::get('out_trade_no'),
 					'trade_no' => Input::get('trade_no')
@@ -86,3 +126,34 @@ composer require latrell/alipay dev-master
 	}
 ```
 
+#### 手机端
+
+```php
+	/**
+	 * 支付宝异步通知
+	 */
+	public function alipayNotify()
+	{
+		// 验证请求。
+		if (! app('alipay.mobile')->verify()) {
+			Log::notice('Alipay notify post data verification fail.', [
+				'data' => Request::instance()->getContent()
+			]);
+			return 'fail';
+		}
+
+		// 判断通知类型。
+		switch (Input::get('trade_status')) {
+			case 'TRADE_SUCCESS':
+			case 'TRADE_FINISHED':
+				// TODO: 支付成功，取得订单号进行其它相关操作。
+				Log::debug('Alipay notify get data verification success.', [
+					'out_trade_no' => Input::get('out_trade_no'),
+					'trade_no' => Input::get('trade_no')
+				]);
+				break;
+		}
+
+		return 'success';
+	}
+```
