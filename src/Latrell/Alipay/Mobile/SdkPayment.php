@@ -318,12 +318,12 @@ class SdkPayment
 	 */
 	private function createLinkstring($para)
 	{
-		$arg = '';
+		$arg = array();
 		while ((list ($key, $val) = each($para)) == true) {
-			$arg .= $key . '=' . $val . '&';
+			$arg[] = $key . '=' . $val;
 		}
-		//去掉最后一个&字符
-		$arg = substr($arg, 0, count($arg) - 2);
+		
+		$arg = join('&', $arg);
 
 		//如果存在转义字符，那么去掉转义
 		if (get_magic_quotes_gpc()) {
