@@ -46,6 +46,8 @@ class SdkPayment
 
 	private $cacert;
 
+	private $qr_pay_mode;
+
 	public function __construct()
 	{
 		$this->cacert = getcwd() . '\\cacert.pem';
@@ -70,7 +72,8 @@ class SdkPayment
 			'show_url' => $this->show_url,
 			'anti_phishing_key' => $this->anti_phishing_key,
 			'exter_invoke_ip' => $this->exter_invoke_ip,
-			'_input_charset' => strtolower($this->_input_charset)
+			'_input_charset' => strtolower($this->_input_charset),
+			'qr_pay_mode' => $this->qr_pay_mode
 		);
 
 		$para = $this->buildRequestPara($parameter);
@@ -178,6 +181,12 @@ class SdkPayment
 	public function setExterInvokeIp($exter_invoke_ip)
 	{
 		$this->exter_invoke_ip = $exter_invoke_ip;
+		return $this;
+	}
+
+	public function setQrPayMode($qr_pay_mode)
+	{
+		$this->qr_pay_mode = $qr_pay_mode;
 		return $this;
 	}
 
