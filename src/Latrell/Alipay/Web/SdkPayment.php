@@ -33,6 +33,8 @@ class SdkPayment
 	private $subject;
 
 	private $body;
+	
+	private $it_b_pay;
 
 	private $show_url;
 
@@ -69,6 +71,7 @@ class SdkPayment
 			'subject' => $this->subject,
 			'total_fee' => $this->total_fee,
 			'body' => $this->body,
+			'it_b_pay' => $this->it_b_pay,
 			'show_url' => $this->show_url,
 			'anti_phishing_key' => $this->anti_phishing_key,
 			'exter_invoke_ip' => $this->exter_invoke_ip,
@@ -163,6 +166,12 @@ class SdkPayment
 	public function setBody($body)
 	{
 		$this->body = $body;
+		return $this;
+	}
+	
+	public function setItBPay($it_b_pay)
+	{
+		$this->it_b_pay = $it_b_pay;
 		return $this;
 	}
 
