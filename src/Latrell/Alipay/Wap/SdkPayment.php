@@ -1,5 +1,5 @@
 <?php
-namespace Latrell\Alipay\Web;
+namespace Latrell\Alipay\Wap;
 
 class SdkPayment
 {
@@ -10,7 +10,7 @@ class SdkPayment
 
 	private $__http_verify_url = 'http://notify.alipay.com/trade/notify_query.do?';
 
-	private $service = 'create_direct_pay_by_user';
+	private $service = 'alipay.wap.create.direct.pay.by.user';
 
 	private $partner;
 
@@ -38,8 +38,6 @@ class SdkPayment
 
 	private $show_url;
 
-	private $anti_phishing_key;
-
 	private $exter_invoke_ip;
 
 	private $key;
@@ -47,8 +45,6 @@ class SdkPayment
 	private $transport;
 
 	private $cacert;
-
-	private $qr_pay_mode;
 
 	public function __construct()
 	{
@@ -66,17 +62,15 @@ class SdkPayment
 			'payment_type' => $this->payment_type,
 			'notify_url' => $this->notify_url,
 			'return_url' => $this->return_url,
-			'seller_email' => $this->seller_id,
+			'seller_id' => $this->seller_id,
 			'out_trade_no' => $this->out_trade_no,
 			'subject' => $this->subject,
 			'total_fee' => $this->total_fee,
 			'body' => $this->body,
 			'it_b_pay' => $this->it_b_pay,
 			'show_url' => $this->show_url,
-			'anti_phishing_key' => $this->anti_phishing_key,
 			'exter_invoke_ip' => $this->exter_invoke_ip,
-			'_input_charset' => strtolower($this->_input_charset),
-			'qr_pay_mode' => $this->qr_pay_mode
+			'_input_charset' => strtolower($this->_input_charset)
 		);
 
 		$para = $this->buildRequestPara($parameter);
@@ -190,12 +184,6 @@ class SdkPayment
 	public function setExterInvokeIp($exter_invoke_ip)
 	{
 		$this->exter_invoke_ip = $exter_invoke_ip;
-		return $this;
-	}
-
-	public function setQrPayMode($qr_pay_mode)
-	{
-		$this->qr_pay_mode = $qr_pay_mode;
 		return $this;
 	}
 
