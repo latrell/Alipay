@@ -40,6 +40,8 @@ class SdkPayment
 
 	private $exter_invoke_ip;
 
+	private $app_pay = 'Y';
+
 	private $key;
 
 	private $transport;
@@ -70,6 +72,7 @@ class SdkPayment
 			'it_b_pay' => $this->it_b_pay,
 			'show_url' => $this->show_url,
 			'exter_invoke_ip' => $this->exter_invoke_ip,
+			'app_pay' => $this->app_pay,
 			'_input_charset' => strtolower($this->_input_charset)
 		);
 
@@ -88,7 +91,7 @@ class SdkPayment
 			return false;
 		}
 
-		$data = $_POST ?  : $_GET;
+		$data = $_POST ?: $_GET;
 
 		// 生成签名结果
 		$is_sign = $this->getSignVeryfy($data, $data['sign']);
@@ -184,6 +187,12 @@ class SdkPayment
 	public function setExterInvokeIp($exter_invoke_ip)
 	{
 		$this->exter_invoke_ip = $exter_invoke_ip;
+		return $this;
+	}
+
+	public function setAppPay($app_pay)
+	{
+		$this->app_pay = $app_pay;
 		return $this;
 	}
 
