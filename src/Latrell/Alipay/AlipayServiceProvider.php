@@ -2,6 +2,8 @@
 namespace Latrell\Alipay;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Foundation\Application as LaravelApplication;
+use Laravel\Lumen\Application as LumenApplication;
 
 class AlipayServiceProvider extends ServiceProvider
 {
@@ -11,11 +13,34 @@ class AlipayServiceProvider extends ServiceProvider
 	 */
 	public function boot()
 	{
-		$this->publishes([
-			__DIR__ . '/../../config/config.php' => config_path('latrell-alipay.php'),
-			__DIR__ . '/../../config/mobile.php' => config_path('latrell-alipay-mobile.php'),
-			__DIR__ . '/../../config/web.php' => config_path('latrell-alipay-web.php')
-		]);
+		$this->setupConfig();
+	}
+
+	/**
+	 * Setup the config.
+	 *
+	 * @return void
+	 */
+	protected function setupConfig()
+	{
+		$source_config = realpath(__DIR__ . '/../../config/config.php');
+		$source_mobile = realpath(__DIR__ . '/../../config/mobile.php');
+		$source_web = realpath(__DIR__ . '/../../config/web.php');
+		if ($this->app instanceof LaravelApplication && $this->app->runningInConsole()) {
+			$this->publishes([
+				$source_config => config_path('latrell-alipay.php'),
+				$source_mobile => config_path('latrell-alipay-mobile.php'),
+				$source_web => config_path('latrell-alipay-web.php'),
+			]);
+		} elseif ($this->app instanceof LumenApplication) {
+			$this->app->configure('latrell-alipay');
+			$this->app->configure('latrell-alipay-mobile');
+			$this->app->configure('latrell-alipay-web');
+		}
+		
+		$this->mergeConfigFrom($source_config, 'latrell-alipay');
+		$this->mergeConfigFrom($source_mobile, 'latrell-alipay-mobile');
+		$this->mergeConfigFrom($source_web, 'latrell-alipay-web');
 	}
 
 	/**
@@ -25,10 +50,7 @@ class AlipayServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-		$this->mergeConfigFrom(__DIR__ . '/../../config/config.php', 'latrell-alipay');
-		$this->mergeConfigFrom(__DIR__ . '/../../config/mobile.php', 'latrell-alipay-mobile');
-		$this->mergeConfigFrom(__DIR__ . '/../../config/web.php', 'latrell-alipay-web');
-
+		
 		$this->app->bind('alipay.mobile', function ($app)
 		{
 			$alipay = new Mobile\SdkPayment();
