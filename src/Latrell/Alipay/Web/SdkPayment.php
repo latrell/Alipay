@@ -52,7 +52,7 @@ class SdkPayment
 
 	public function __construct()
 	{
-		$this->cacert = getcwd() . '/../cacert.pem';
+		$this->cacert = getcwd() . DIRECTORY_SEPARATOR . 'cacert.pem';
 	}
 
 	/**
@@ -196,6 +196,12 @@ class SdkPayment
 	public function setQrPayMode($qr_pay_mode)
 	{
 		$this->qr_pay_mode = $qr_pay_mode;
+		return $this;
+	}
+
+	public function setCacert($cacert)
+	{
+		$this->cacert = $cacert;
 		return $this;
 	}
 
