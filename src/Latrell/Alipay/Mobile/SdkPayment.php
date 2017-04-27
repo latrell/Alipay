@@ -108,6 +108,11 @@ class SdkPayment
 		}
 	}
 
+	public function setGateway($gateway)
+	{
+		$this->__gateway_new = $gateway;
+	}
+
 	public function setBody($body)
 	{
 		$this->body = $body;

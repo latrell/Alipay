@@ -112,6 +112,11 @@ class SdkPayment
 		}
 	}
 
+	public function setGateway($gateway)
+	{
+		$this->__gateway_new = $gateway;
+	}
+
 	public function setPartner($partner)
 	{
 		$this->partner = $partner;
