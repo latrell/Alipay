@@ -142,6 +142,19 @@ $app->register(Latrell\Alipay\AlipayServiceProvider::class);
 		return view('alipay.success');
 	}
 ```
+####网页退款
+```php
+	    public function Refunds (Request $request)
+    {
+        $batch_no = date("YmdHis").rand();
+        $alipay = app('alipay.web');
+        $alipay->setrefund_date();
+        $alipay->setbatch_no($batch_no);
+        $alipay->setbatch_num('batch_num');
+        $alipay->setdetail_data('detail_data');
+        return redirect()->to($alipay->Refunds());
+    }
+```
 
 #### 手机端
 
