@@ -215,6 +215,9 @@ class SdkPayment
 			case 'RSA':
 				$mysign = $this->rsaSign($prestr, trim($this->private_key_path));
 				break;
+			case 'RSA2':
+				$mysign = $this->rsaSign($prestr, trim($this->private_key_path), OPENSSL_ALGO_SHA256);
+				break;
 			default:
 				$mysign = '';
 		}
@@ -246,6 +249,9 @@ class SdkPayment
 				break;
 			case 'RSA':
 				$is_sgin = $this->rsaVerify($prestr, $this->public_key_path, $sign);
+				break;
+			case 'RSA2':
+				$is_sgin = $this->rsaVerify($prestr, $this->public_key_path, $sign, OPENSSL_ALGO_SHA256);
 				break;
 			default:
 				$is_sgin = false;
@@ -291,11 +297,11 @@ class SdkPayment
 	 * @param $sign 要校对的的签名结果
 	 * return 验证结果
 	 */
-	private function rsaVerify($data, $public_key_path, $sign)
+	private function rsaVerify($data, $public_key_path, $sign, $openssl_algo = OPENSSL_ALGO_SHA1)
 	{
 		$pubKey = file_get_contents($public_key_path);
 		$res = openssl_get_publickey($pubKey);
-		$result = (bool) openssl_verify($data, base64_decode($sign), $res);
+		$result = (bool) openssl_verify($data, base64_decode($sign), $res, $openssl_algo);
 		openssl_free_key($res);
 		return $result;
 	}
@@ -306,11 +312,11 @@ class SdkPayment
 	 * @param $private_key_path 商户私钥文件路径
 	 * return 签名结果
 	 */
-	private function rsaSign($data, $private_key_path)
+	private function rsaSign($data, $private_key_path, $openssl_algo = OPENSSL_ALGO_SHA1)
 	{
 		$priKey = file_get_contents($private_key_path);
 		$res = openssl_get_privatekey($priKey);
-		openssl_sign($data, $sign, $res);
+		openssl_sign($data, $sign, $res, $openssl_algo);
 		openssl_free_key($res);
 		//base64编码
 		$sign = base64_encode($sign);
