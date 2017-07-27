@@ -28,6 +28,10 @@ class SdkPayment
 
 	private $seller_id;
 
+	private $seller_email;
+
+	private $seller_account_name;
+
 	private $total_fee;
 
 	private $subject;
@@ -66,7 +70,9 @@ class SdkPayment
 			'payment_type' => $this->payment_type,
 			'notify_url' => $this->notify_url,
 			'return_url' => $this->return_url,
+			'seller_id' => $this->partner,
 			'seller_email' => $this->seller_id,
+			'seller_account_name' => $this->seller_account_name,
 			'out_trade_no' => $this->out_trade_no,
 			'subject' => $this->subject,
 			'total_fee' => $this->total_fee,
@@ -94,7 +100,7 @@ class SdkPayment
 			return false;
 		}
 
-		$data = $_POST ?  : $_GET;
+		$data = $_POST ?: $_GET;
 
 		// 生成签名结果
 		$is_sign = $this->getSignVeryfy($data, $data['sign']);
@@ -148,6 +154,18 @@ class SdkPayment
 	public function setSellerId($seller_id)
 	{
 		$this->seller_id = $seller_id;
+		return $this;
+	}
+
+	public function setSellerEmail($seller_email)
+	{
+		$this->seller_email = $seller_email;
+		return $this;
+	}
+
+	public function setSellerAccountName($seller_account_name)
+	{
+		$this->seller_account_name = $seller_account_name;
 		return $this;
 	}
 
