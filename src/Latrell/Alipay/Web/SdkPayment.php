@@ -71,8 +71,6 @@ class SdkPayment
 			'notify_url' => $this->notify_url,
 			'return_url' => $this->return_url,
 			'seller_id' => $this->partner,
-			'seller_email' => $this->seller_id,
-			'seller_account_name' => $this->seller_account_name,
 			'out_trade_no' => $this->out_trade_no,
 			'subject' => $this->subject,
 			'total_fee' => $this->total_fee,
