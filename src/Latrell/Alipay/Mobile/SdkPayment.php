@@ -317,6 +317,38 @@ class SdkPayment
 		return $sign;
 	}
 
+    /**
+     * MD5签名
+     * @param $prestr 需要签名的字符串
+     * @param $key 私钥
+     * return 签名结果
+     */
+    private function md5Sign($prestr, $key)
+    {
+        $prestr = $prestr . $key;
+        return md5($prestr);
+    }
+
+    /**
+     * MD5验证签名
+     * @param $prestr 需要签名的字符串
+     * @param $sign 签名结果
+     * @param $key 私钥
+     * return 签名结果
+     */
+    private function md5Verify($prestr, $sign, $key)
+    {
+        $prestr = $prestr . $key;
+        $mysgin = md5($prestr);
+
+        if ($mysgin == $sign) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 	/**
 	 * 把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
 	 * @param $para 需要拼接的数组
