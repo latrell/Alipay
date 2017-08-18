@@ -1,6 +1,8 @@
 <?php
 namespace Latrell\Alipay\Web;
 
+use Carbon\Carbon;
+
 class SdkPayment
 {
 
@@ -27,6 +29,10 @@ class SdkPayment
 	private $payment_type = 1;
 
 	private $seller_id;
+
+	private $seller_email;
+
+	private $seller_account_name;
 
 	private $total_fee;
 
@@ -66,7 +72,7 @@ class SdkPayment
 			'payment_type' => $this->payment_type,
 			'notify_url' => $this->notify_url,
 			'return_url' => $this->return_url,
-			'seller_email' => $this->seller_id,
+			'seller_id' => $this->partner,
 			'out_trade_no' => $this->out_trade_no,
 			'subject' => $this->subject,
 			'total_fee' => $this->total_fee,
@@ -94,7 +100,7 @@ class SdkPayment
 			return false;
 		}
 
-		$data = $_POST ?  : $_GET;
+		$data = $_POST ?: $_GET;
 
 		// 生成签名结果
 		$is_sign = $this->getSignVeryfy($data, $data['sign']);
@@ -151,6 +157,18 @@ class SdkPayment
 		return $this;
 	}
 
+	public function setSellerEmail($seller_email)
+	{
+		$this->seller_email = $seller_email;
+		return $this;
+	}
+
+	public function setSellerAccountName($seller_account_name)
+	{
+		$this->seller_account_name = $seller_account_name;
+		return $this;
+	}
+
 	public function setTotalFee($total_fee)
 	{
 		$this->total_fee = $total_fee;
@@ -171,7 +189,24 @@ class SdkPayment
 
 	public function setItBPay($it_b_pay)
 	{
-		$this->it_b_pay = $it_b_pay;
+		// 超时时间需要进行格式化。
+
+
+		// 该笔订单允许的最晚付款时间，逾期将关闭交易。
+		// 取值范围：1m～15d。
+		// m-分钟，h-小时，d-天，1c-当天（1c-当天的情况下，无论交易何时创建，都在0点关闭）。
+		// 该参数数值不接受小数点，如1.5h，可转换为90m。
+		// 该参数在请求到支付宝时开始计时。
+		if (! $it_b_pay instanceof Carbon) {
+			$it_b_pay = Carbon::parse($it_b_pay);
+		}
+
+		$this->it_b_pay = Carbon::now()->diffInMinutes($it_b_pay, false);
+		if ($this->it_b_pay < 0) {
+			$this->it_b_pay = 0;
+		}
+		$this->it_b_pay .= 'm';
+
 		return $this;
 	}
 
