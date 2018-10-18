@@ -262,7 +262,7 @@ class SdkPayment
 	private function paraFilter($para)
 	{
 		$para_filter = array();
-		while ((list ($key, $val) = each($para)) == true) {
+		foreach ($para as $key => $val) {
 			if ($key == 'sign' || $key == 'sign_type' || $val == '') {
 				continue;
 			} else {
@@ -325,7 +325,7 @@ class SdkPayment
 	private function createLinkstring($para)
 	{
 		$arg = '';
-		while ((list ($key, $val) = each($para)) == true) {
+        foreach ($para as $key => $val) {
 			$arg .= $key . '=' . $val . '&';
 		}
 		//去掉最后一个&字符
@@ -347,7 +347,7 @@ class SdkPayment
 	private function createLinkstringUrlencode($para)
 	{
 		$arg = '';
-		while ((list ($key, $val) = each($para)) == true) {
+        foreach ($para as $key => $val) {
 			$arg .= $key . '=' . urlencode($val) . '&';
 		}
 		//去掉最后一个&字符
